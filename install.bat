@@ -1,43 +1,43 @@
 @echo off
-REM OpenClaw Installer Pro - Windows 快速安装脚本
+REM OpenClaw Installer Pro - Windows Setup Script
 
 echo ========================================
-echo   OpenClaw Installer Pro 安装程序
+echo   OpenClaw Installer Pro Setup
 echo ========================================
 echo.
 
-REM 检查 Python 是否安装
+REM Check Python installation
 python --version >nul 2>&1
 if %errorlevel% neq 0 (
-    echo [错误] 未检测到 Python
-    echo 请先安装 Python 3.8 或更高版本
-    echo 下载地址: https://www.python.org/downloads/
+    echo [ERROR] Python not detected
+    echo Please install Python 3.8 or higher
+    echo Download: https://www.python.org/downloads/
     pause
     exit /b 1
 )
 
-echo [1/3] 检测到 Python
+echo [1/3] Python detected
 python --version
 echo.
 
-REM 升级 pip
-echo [2/3] 升级 pip...
+REM Upgrade pip
+echo [2/3] Upgrading pip...
 python -m pip install --upgrade pip
 
-REM 安装依赖
-echo [2/3] 安装依赖...
+REM Install dependencies
+echo [2/3] Installing dependencies...
 python -m pip install -r requirements.txt
 
 if %errorlevel% neq 0 (
-    echo [错误] 依赖安装失败
+    echo [ERROR] Dependencies installation failed
     pause
     exit /b 1
 )
 
 echo.
-echo [3/3] 启动程序...
+echo [3/3] Starting application...
 python src/main.py
 
 echo.
-echo 如果程序启动失败，请检查上面的错误信息
+echo If the application fails to start, please check the error messages above
 pause
