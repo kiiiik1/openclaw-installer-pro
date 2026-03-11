@@ -1,0 +1,19 @@
+name: Release Build All
+
+on:
+  release:
+    types: [created]
+
+jobs:
+  call-build-workflow:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        workflow: [build-windows, build-linux, build-macos, build-source]
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Run build workflow
+      uses: ./.github/workflows/${{ matrix.workflow }}.yml

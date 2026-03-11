@@ -1,0 +1,33 @@
+name: Build Source Distribution
+
+on:
+  release:
+    types: [created]
+  workflow_dispatch:
+
+jobs:
+  build-source:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Create source zip
+      run: |
+        zip -r openclaw-installer-pro-v${{ github.ref_name }}.zip . -x ".git/*" "*.pyc" "__pycache__/*"
+
+    - name: Upload to release
+      if: github.event_name == 'release'
+      uses: softprops/action-gh-release@v1
+      with:
+        files: openclaw-installer-pro-v${{ github.ref_name }}.zip
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Archive artifact
+      if: github.event_name != 'release'
+      uses: actions/upload-artifact@v3
+      with:
+        name: source-zip
+        path: openclaw-installer-pro-v${{ github.ref_name }}.zip
